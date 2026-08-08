@@ -1,0 +1,640 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&display=swap');
+
+  .bn-root {
+    font-family: 'Inter', system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px 14px 32px;
+    box-sizing: border-box;
+    background: radial-gradient(120% 90% at 50% -10%, #24344F 0%, #14203A 55%, #0B1425 100%);
+    min-height: 100%;
+  }
+  .bn-wrap { width: 100%; max-width: 380px; }
+  .bn-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 14px; }
+  .bn-title {
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 27px;
+    color: #EAF1FB; margin: 0; letter-spacing: -0.4px;
+  }
+  .bn-sub { color: #7E93B8; font-size: 12px; margin: 4px 0 0; }
+  .bn-icon-btn {
+    background: rgba(244,169,59,0.15); border: 1px solid rgba(244,169,59,0.45);
+    border-radius: 10px; padding: 8px; cursor: pointer; display: flex; margin-left: 6px;
+  }
+  .bn-head-btns { display: flex; }
+  .bn-stats { display: flex; gap: 8px; margin-bottom: 12px; }
+  .bn-stat {
+    flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 7px 10px; min-width: 0;
+  }
+  .bn-stat-label { color: #7E93B8; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+  .bn-stat-val { color: #EAF1FB; font-size: 17px; font-weight: 700; font-family: 'Fraunces', serif; }
+  .bn-lives { display: flex; gap: 3px; margin-top: 3px; flex-wrap: wrap; }
+  .bn-lantern { width: 9px; height: 12px; border-radius: 3px 3px 5px 5px; background: #F4A93B; box-shadow: 0 0 6px rgba(244,169,59,0.7); }
+  .bn-lantern.off { background: rgba(255,255,255,0.12); box-shadow: none; }
+
+  .bn-stage {
+    position: relative; width: 100%; aspect-ratio: 360 / 600;
+    background: linear-gradient(180deg, #1B2A44 0%, #14203A 70%, #101A30 100%);
+    border-radius: 18px; overflow: hidden;
+    box-shadow: inset 0 2px 14px rgba(0,0,0,0.4), 0 10px 26px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.06);
+    touch-action: none;
+  }
+  .bn-stage canvas { width: 100%; height: 100%; display: block; }
+
+  .bn-buffs { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+  .bn-buff-chip {
+    width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; background: rgba(11,20,37,0.7); border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .bn-overlay {
+    position: absolute; inset: 0; background: rgba(11,20,37,0.9);
+    display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    text-align: center; padding: 20px;
+  }
+  .bn-overlay.show { display: flex; }
+  .bn-overlay h2 { font-family: 'Fraunces', serif; color: #EAF1FB; font-size: 21px; margin: 0; }
+  .bn-overlay p { color: #9AB0D4; font-size: 12.5px; margin: -4px 0 4px; line-height: 1.5; }
+  .bn-btn {
+    background: #F4A93B; color: #14203A; border: none; border-radius: 10px;
+    padding: 11px 24px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .bn-hint { color: #5E7398; font-size: 11px; text-align: center; margin-top: 12px; }
+
+  .bn-boss-bar { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 70%; }
+  .bn-boss-track { height: 8px; border-radius: 5px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); overflow: hidden; }
+  .bn-boss-fill { height: 100%; background: linear-gradient(90deg,#E85B5B,#F4A93B); transition: width 120ms linear; }
+  .bn-boss-label { color: #EAF1FB; font-size: 10px; text-align: center; margin-top: 3px; letter-spacing: 0.05em; }
+</style>
+
+<div class="bn-root">
+  <div class="bn-wrap">
+    <div class="bn-head">
+      <div>
+        <h1 class="bn-title">Bostan Nöbetçisi</h1>
+        <p class="bn-sub">Güçlendirmeler · Boss dalgası · Kombo</p>
+      </div>
+      <div class="bn-head-btns">
+        <button class="bn-icon-btn" id="bnPauseBtn" aria-label="Duraklat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4A93B" stroke-width="2.4" stroke-linecap="round"><line x1="8" y1="5" x2="8" y2="19"/><line x1="16" y1="5" x2="16" y2="19"/></svg>
+        </button>
+        <button class="bn-icon-btn" id="bnRestartBtn" aria-label="Yeniden başlat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F4A93B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="bn-stats">
+      <div class="bn-stat">
+        <div class="bn-stat-label">Skor</div>
+        <div class="bn-stat-val" id="bnScore">0</div>
+      </div>
+      <div class="bn-stat">
+        <div class="bn-stat-label">En İyi</div>
+        <div class="bn-stat-val" id="bnBest">0</div>
+      </div>
+      <div class="bn-stat">
+        <div class="bn-stat-label">Kombo</div>
+        <div class="bn-stat-val" id="bnCombo">x1</div>
+      </div>
+      <div class="bn-stat" style="flex:1.3;">
+        <div class="bn-stat-label">Can</div>
+        <div class="bn-lives" id="bnLives"></div>
+      </div>
+    </div>
+
+    <div class="bn-stage" id="bnStage">
+      <canvas id="bnCanvas" width="360" height="600"></canvas>
+
+      <div class="bn-buffs" id="bnBuffs"></div>
+
+      <div class="bn-boss-bar" id="bnBossBar" style="display:none;">
+        <div class="bn-boss-track"><div class="bn-boss-fill" id="bnBossFill" style="width:100%;"></div></div>
+        <div class="bn-boss-label">BAYKUŞ</div>
+      </div>
+
+      <div class="bn-overlay" id="bnOverlay">
+        <h2 id="bnOverlayTitle">Bahçe Kaybedildi</h2>
+        <p id="bnOverlaySub">Skor: 0</p>
+        <button class="bn-btn" id="bnPlayAgain">Tekrar Oyna</button>
+      </div>
+      <div class="bn-overlay show" id="bnStart">
+        <h2>Bostan Nöbetçisi</h2>
+        <p>Sürükleyerek hareket et, nöbetçi otomatik ateş eder.<br/>Işıklı taneler güçlendirme verir. 5 dalgada bir baykuş gelir.</p>
+        <button class="bn-btn" id="bnStartBtn">Başla</button>
+      </div>
+      <div class="bn-overlay" id="bnPauseOverlay">
+        <h2>Duraklatıldı</h2>
+        <button class="bn-btn" id="bnResumeBtn">Devam Et</button>
+      </div>
+    </div>
+
+    <p class="bn-hint">Sürükle: hareket · Ok tuşları: masaüstü · Güçlendirmeleri toplamak için üzerlerinden geç</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  const canvas = document.getElementById('bnCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const scoreEl = document.getElementById('bnScore');
+  const bestEl = document.getElementById('bnBest');
+  const comboEl = document.getElementById('bnCombo');
+  const livesEl = document.getElementById('bnLives');
+  const buffsEl = document.getElementById('bnBuffs');
+  const overlay = document.getElementById('bnOverlay');
+  const overlayTitle = document.getElementById('bnOverlayTitle');
+  const overlaySub = document.getElementById('bnOverlaySub');
+  const startOverlay = document.getElementById('bnStart');
+  const pauseOverlay = document.getElementById('bnPauseOverlay');
+  const bossBar = document.getElementById('bnBossBar');
+  const bossFill = document.getElementById('bnBossFill');
+
+  const PLAYER_Y = H - 56;
+  const PLAYER_R = 18;
+  let bestScore = 0;
+
+  let state;
+
+  function freshState() {
+    return {
+      playerX: W / 2, targetX: W / 2,
+      lives: 3, maxLives: 5,
+      bullets: [], enemies: [], particles: [], pickups: [], enemyShots: [],
+      score: 0, wave: 1,
+      lastShot: 0, shotInterval: 420,
+      spawnTimer: 0, spawnInterval: 1300,
+      elapsed: 0,
+      running: false, paused: false, over: false,
+      combo: 0, comboTimer: 0,
+      buffs: { multi: 0, rapid: 0, shield: 0 },
+      boss: null, bossWaveDone: -1,
+      shake: 0,
+    };
+  }
+
+  function renderLives() {
+    livesEl.innerHTML = '';
+    for (let i = 0; i < state.maxLives; i++) {
+      const d = document.createElement('div');
+      d.className = 'bn-lantern' + (i < state.lives ? '' : ' off');
+      livesEl.appendChild(d);
+    }
+  }
+
+  function renderBuffs() {
+    buffsEl.innerHTML = '';
+    const map = [
+      ['multi', '✦', '#5FD0C4'],
+      ['rapid', '⚡', '#F4864F'],
+      ['shield', '◈', '#5B9CF4'],
+    ];
+    map.forEach(([key, icon, color]) => {
+      if (state.buffs[key] > 0) {
+        const chip = document.createElement('div');
+        chip.className = 'bn-buff-chip';
+        chip.style.color = color;
+        chip.style.borderColor = color;
+        chip.textContent = icon;
+        buffsEl.appendChild(chip);
+      }
+    });
+  }
+
+  const ENEMY_TYPES = {
+    bug:   { r: 11, speed: 78,  hp: 1, points: 10, color: '#6FA36B', dark: '#3F6B3D' },
+    mouse: { r: 14, speed: 55,  hp: 1, points: 15, color: '#B7AFA3', dark: '#7C7468' },
+    crow:  { r: 17, speed: 40,  hp: 2, points: 25, color: '#2B2F3A', dark: '#14161C' },
+  };
+
+  const PICKUP_TYPES = {
+    multi:  { color: '#5FD0C4', weight: 0.35 },
+    rapid:  { color: '#F4864F', weight: 0.35 },
+    shield: { color: '#5B9CF4', weight: 0.2 },
+    life:   { color: '#F06A9B', weight: 0.1 },
+  };
+
+  function rollPickupType() {
+    let r = Math.random(); let acc = 0;
+    for (const key in PICKUP_TYPES) {
+      acc += PICKUP_TYPES[key].weight;
+      if (r <= acc) return key;
+    }
+    return 'multi';
+  }
+
+  function spawnPickup(x, y) {
+    const type = rollPickupType();
+    state.pickups.push({ x, y, type, vy: 60 });
+  }
+
+  function spawnEnemy() {
+    const roll = Math.random();
+    let type;
+    if (state.wave >= 3 && roll < 0.22) type = 'crow';
+    else if (roll < 0.55) type = 'mouse';
+    else type = 'bug';
+    const def = ENEMY_TYPES[type];
+    const speedMul = 1 + (state.wave - 1) * 0.1;
+    state.enemies.push({
+      type, x: 24 + Math.random() * (W - 48), y: -20,
+      r: def.r, speed: def.speed * speedMul, hp: def.hp, maxHp: def.hp, points: def.points,
+      wobble: Math.random() * Math.PI * 2, flash: 0,
+    });
+  }
+
+  function spawnBoss() {
+    state.boss = {
+      x: W / 2, y: 70, r: 34,
+      hp: 16 + state.wave * 2, maxHp: 16 + state.wave * 2,
+      dir: 1, shotTimer: 0, flash: 0,
+    };
+    bossBar.style.display = 'block';
+  }
+
+  function nearestEnemyX() {
+    let best = null, bestDist = Infinity;
+    for (const e of state.enemies) {
+      const d = Math.abs(e.x - state.playerX) + e.y * 0.15;
+      if (d < bestDist) { bestDist = d; best = e; }
+    }
+    return best;
+  }
+
+  function fireBullet() {
+    if (state.enemies.length === 0 && !state.boss) return;
+    const offsets = state.buffs.multi > 0 ? [-14, 0, 14] : [0];
+    offsets.forEach((off) => {
+      state.bullets.push({ x: state.playerX + off, y: PLAYER_Y - PLAYER_R, vx: 0, vy: -440 });
+    });
+  }
+
+  function addBurst(x, y, color, n) {
+    for (let i = 0; i < (n || 7); i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const spd = 40 + Math.random() * 90;
+      state.particles.push({ x, y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd, life: 0.45, color });
+    }
+  }
+
+  function addShake(amount) {
+    state.shake = Math.min(14, state.shake + amount);
+  }
+
+  function registerKill(points, x, y, color) {
+    state.comboTimer = 1.1;
+    state.combo += 1;
+    const mult = 1 + Math.floor(state.combo / 5) * 0.5;
+    state.score += Math.round(points * Math.min(mult, 3));
+    scoreEl.textContent = state.score;
+    comboEl.textContent = 'x' + Math.min(mult, 3).toFixed(1).replace('.0', '');
+    addBurst(x, y, color);
+    if (Math.random() < 0.16) spawnPickup(x, y);
+  }
+
+  function loseLife() {
+    if (state.buffs.shield > 0) {
+      state.buffs.shield = 0;
+      addBurst(state.playerX, PLAYER_Y, '#5B9CF4', 10);
+      addShake(4);
+      return;
+    }
+    state.lives -= 1;
+    renderLives();
+    addShake(8);
+    if (state.lives <= 0) endGame();
+  }
+
+  function endGame() {
+    state.over = true;
+    state.running = false;
+    if (state.score > bestScore) { bestScore = state.score; bestEl.textContent = bestScore; }
+    overlayTitle.textContent = 'Bahçe Kaybedildi';
+    overlaySub.textContent = 'Skor: ' + state.score + ' · Dalga: ' + state.wave;
+    overlay.classList.add('show');
+  }
+
+  function collectPickup(p) {
+    if (p.type === 'life') {
+      state.lives = Math.min(state.maxLives, state.lives + 1);
+      renderLives();
+    } else if (p.type === 'multi') {
+      state.buffs.multi = 8;
+    } else if (p.type === 'rapid') {
+      state.buffs.rapid = 8;
+    } else if (p.type === 'shield') {
+      state.buffs.shield = 1;
+    }
+    addBurst(p.x, p.y, PICKUP_TYPES[p.type].color, 10);
+    renderBuffs();
+  }
+
+  function update(dt) {
+    if (!state.running || state.paused) return;
+    state.elapsed += dt;
+
+    state.playerX += (state.targetX - state.playerX) * Math.min(1, dt * 10);
+    state.playerX = Math.max(PLAYER_R + 4, Math.min(W - PLAYER_R - 4, state.playerX));
+
+    ['multi', 'rapid', 'shield'].forEach((k) => {
+      if (state.buffs[k] > 0) {
+        if (k !== 'shield') state.buffs[k] -= dt;
+        if (state.buffs[k] <= 0 && k !== 'shield') { state.buffs[k] = 0; renderBuffs(); }
+      }
+    });
+
+    if (state.combo > 0) {
+      state.comboTimer -= dt;
+      if (state.comboTimer <= 0) { state.combo = 0; comboEl.textContent = 'x1'; }
+    }
+
+    const newWave = 1 + Math.floor(state.elapsed / 16);
+    if (newWave !== state.wave && !state.boss) {
+      state.wave = newWave;
+      document.getElementById('bnWave');
+      state.spawnInterval = Math.max(420, 1300 - state.wave * 85);
+      if (state.wave % 5 === 0 && state.bossWaveDone !== state.wave) {
+        state.bossWaveDone = state.wave;
+        state.enemies = [];
+        spawnBoss();
+      }
+    }
+
+    if (!state.boss) {
+      state.spawnTimer += dt * 1000;
+      if (state.spawnTimer > state.spawnInterval) { state.spawnTimer = 0; spawnEnemy(); }
+    }
+
+    const effectiveShotInterval = state.buffs.rapid > 0 ? state.shotInterval * 0.45 : state.shotInterval;
+    state.lastShot += dt * 1000;
+    if (state.lastShot > effectiveShotInterval) { state.lastShot = 0; fireBullet(); }
+
+    state.bullets.forEach((b) => { b.y += b.vy * dt; });
+    state.bullets = state.bullets.filter((b) => b.y > -10);
+
+    state.enemies.forEach((e) => {
+      e.y += e.speed * dt;
+      e.wobble += dt * 4;
+      e.x += Math.sin(e.wobble) * 8 * dt;
+      if (e.flash > 0) e.flash -= dt;
+    });
+
+    if (state.boss) {
+      const b = state.boss;
+      b.x += b.dir * 55 * dt;
+      if (b.x < 50 || b.x > W - 50) b.dir *= -1;
+      b.shotTimer += dt * 1000;
+      if (b.shotTimer > 1300) {
+        b.shotTimer = 0;
+        state.enemyShots.push({ x: b.x, y: b.y + 20, vy: 150 });
+      }
+      if (b.flash > 0) b.flash -= dt;
+    }
+
+    state.enemyShots.forEach((s) => { s.y += s.vy * dt; });
+    state.enemyShots = state.enemyShots.filter((s) => s.y < H + 20);
+    for (const s of state.enemyShots) {
+      const dx = s.x - state.playerX, dy = s.y - PLAYER_Y;
+      if (dx * dx + dy * dy < (PLAYER_R + 5) * (PLAYER_R + 5)) {
+        s.hit = true;
+        loseLife();
+      }
+    }
+    state.enemyShots = state.enemyShots.filter((s) => !s.hit);
+
+    for (const b of state.bullets) {
+      for (const e of state.enemies) {
+        if (e.hp <= 0) continue;
+        const dx = b.x - e.x, dy = b.y - e.y;
+        if (dx * dx + dy * dy < (e.r + 4) * (e.r + 4)) {
+          e.hp -= 1; e.flash = 0.12; b.y = -9999;
+          if (e.hp <= 0) registerKill(e.points, e.x, e.y, ENEMY_TYPES[e.type].color);
+          break;
+        }
+      }
+      if (state.boss && b.y > -9990) {
+        const dx = b.x - state.boss.x, dy = b.y - state.boss.y;
+        if (dx * dx + dy * dy < (state.boss.r + 4) * (state.boss.r + 4)) {
+          state.boss.hp -= 1; state.boss.flash = 0.1; b.y = -9999;
+          bossFill.style.width = Math.max(0, (state.boss.hp / state.boss.maxHp) * 100) + '%';
+          addBurst(state.boss.x + (Math.random()-0.5)*20, state.boss.y, '#F4A93B', 3);
+          if (state.boss.hp <= 0) {
+            registerKill(150, state.boss.x, state.boss.y, '#2B2F3A');
+            addBurst(state.boss.x, state.boss.y, '#F4A93B', 20);
+            addShake(12);
+            spawnPickup(state.boss.x, state.boss.y);
+            state.boss = null;
+            bossBar.style.display = 'none';
+          }
+        }
+      }
+    }
+    state.bullets = state.bullets.filter((b) => b.y > -100);
+    state.enemies = state.enemies.filter((e) => e.hp > 0);
+
+    const remaining = [];
+    for (const e of state.enemies) {
+      if (e.y > PLAYER_Y + 6) { loseLife(); addBurst(e.x, PLAYER_Y, '#F4A93B'); }
+      else remaining.push(e);
+    }
+    state.enemies = remaining;
+
+    state.pickups.forEach((p) => { p.y += p.vy * dt; });
+    const remainingPickups = [];
+    for (const p of state.pickups) {
+      const dx = p.x - state.playerX, dy = p.y - PLAYER_Y;
+      if (dx * dx + dy * dy < (PLAYER_R + 12) * (PLAYER_R + 12)) {
+        collectPickup(p);
+      } else if (p.y < H + 20) {
+        remainingPickups.push(p);
+      }
+    }
+    state.pickups = remainingPickups;
+
+    state.particles.forEach((p) => { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; });
+    state.particles = state.particles.filter((p) => p.life > 0);
+
+    if (state.shake > 0) state.shake = Math.max(0, state.shake - dt * 30);
+  }
+
+  function drawPlayer() {
+    const x = state.playerX, y = PLAYER_Y;
+    const grad = ctx.createRadialGradient(x, y, 4, x, y, 34);
+    grad.addColorStop(0, 'rgba(244,169,59,0.35)');
+    grad.addColorStop(1, 'rgba(244,169,59,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(x, y, 34, 0, Math.PI * 2); ctx.fill();
+
+    if (state.buffs.shield > 0) {
+      ctx.strokeStyle = 'rgba(91,156,244,0.8)';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x, y - 8, 26, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    ctx.fillStyle = '#D9A468';
+    ctx.beginPath(); ctx.roundRect(x - 12, y - 6, 24, 22, 8); ctx.fill();
+    ctx.fillStyle = '#EAC9A0';
+    ctx.beginPath(); ctx.arc(x, y - 14, 10, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#5C4230';
+    ctx.beginPath(); ctx.moveTo(x - 13, y - 20); ctx.lineTo(x + 13, y - 20); ctx.lineTo(x, y - 34); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = '#B98A55'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x - 12, y + 2); ctx.lineTo(x - 20, y - 6);
+    ctx.moveTo(x + 12, y + 2); ctx.lineTo(x + 20, y - 6);
+    ctx.stroke();
+  }
+
+  function drawEnemy(e) {
+    const def = ENEMY_TYPES[e.type];
+    ctx.save();
+    ctx.translate(e.x, e.y);
+    const fillColor = e.flash > 0 ? '#FFFFFF' : def.color;
+    if (e.type === 'bug') {
+      ctx.fillStyle = fillColor;
+      ctx.beginPath(); ctx.ellipse(0, 0, e.r, e.r * 0.75, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = def.dark; ctx.lineWidth = 1.5;
+      for (let i = -1; i <= 1; i++) { ctx.beginPath(); ctx.moveTo(i * 5, e.r * 0.4); ctx.lineTo(i * 8, e.r * 0.4 + 7); ctx.stroke(); }
+    } else if (e.type === 'mouse') {
+      ctx.fillStyle = fillColor;
+      ctx.beginPath(); ctx.ellipse(0, 2, e.r, e.r * 0.85, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(-e.r * 0.6, -e.r * 0.6, e.r * 0.35, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(e.r * 0.6, -e.r * 0.6, e.r * 0.35, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = def.dark;
+      ctx.beginPath(); ctx.arc(-4, 0, 1.6, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(4, 0, 1.6, 0, Math.PI * 2); ctx.fill();
+    } else {
+      ctx.fillStyle = fillColor;
+      ctx.beginPath();
+      ctx.moveTo(0, -e.r); ctx.lineTo(e.r, e.r * 0.7); ctx.lineTo(0, e.r * 0.3); ctx.lineTo(-e.r, e.r * 0.7);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawBoss() {
+    const b = state.boss;
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.fillStyle = b.flash > 0 ? '#FFFFFF' : '#3A3F4F';
+    ctx.beginPath(); ctx.ellipse(0, 0, b.r, b.r * 0.85, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#5B4A6B';
+    ctx.beginPath(); ctx.moveTo(-b.r, -4); ctx.lineTo(-b.r - 14, 10); ctx.lineTo(-b.r + 6, 14); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(b.r, -4); ctx.lineTo(b.r + 14, 10); ctx.lineTo(b.r - 6, 14); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#F4D9A0';
+    ctx.beginPath(); ctx.arc(-9, -6, 7, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(9, -6, 7, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#14161C';
+    ctx.beginPath(); ctx.arc(-9, -6, 3, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(9, -6, 3, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#F4A93B';
+    ctx.beginPath(); ctx.moveTo(-4, 2); ctx.lineTo(4, 2); ctx.lineTo(0, 9); ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.save();
+    if (state.shake > 0) {
+      ctx.translate((Math.random() - 0.5) * state.shake, (Math.random() - 0.5) * state.shake);
+    }
+    ctx.clearRect(-20, -20, W + 40, H + 40);
+
+    ctx.fillStyle = 'rgba(234,241,251,0.06)';
+    ctx.beginPath(); ctx.arc(W - 60, 70, 46, 0, Math.PI * 2); ctx.fill();
+
+    ctx.strokeStyle = 'rgba(234,241,251,0.08)';
+    ctx.beginPath(); ctx.moveTo(0, PLAYER_Y + 22); ctx.lineTo(W, PLAYER_Y + 22); ctx.stroke();
+
+    state.enemies.forEach(drawEnemy);
+    if (state.boss) drawBoss();
+
+    ctx.fillStyle = '#F4D9A0';
+    state.bullets.forEach((b) => { ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI * 2); ctx.fill(); });
+
+    ctx.fillStyle = '#EAD9F4';
+    state.enemyShots.forEach((s) => { ctx.beginPath(); ctx.ellipse(s.x, s.y, 3, 6, 0, 0, Math.PI * 2); ctx.fill(); });
+
+    state.pickups.forEach((p) => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.fillStyle = PICKUP_TYPES[p.type].color;
+      ctx.shadowColor = PICKUP_TYPES[p.type].color;
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.moveTo(0, -8); ctx.lineTo(7, 0); ctx.lineTo(0, 8); ctx.lineTo(-7, 0); ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    });
+
+    state.particles.forEach((p) => {
+      ctx.globalAlpha = Math.max(0, p.life / 0.45);
+      ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+
+    drawPlayer();
+    ctx.restore();
+  }
+
+  let lastTime = performance.now();
+  function loop(now) {
+    const dt = Math.min(0.05, (now - lastTime) / 1000);
+    lastTime = now;
+    update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  function setTargetFromClientX(clientX) {
+    const rect = canvas.getBoundingClientRect();
+    const scale = W / rect.width;
+    state.targetX = (clientX - rect.left) * scale;
+  }
+
+  let dragging = false;
+  canvas.addEventListener('pointerdown', (e) => { dragging = true; setTargetFromClientX(e.clientX); });
+  window.addEventListener('pointermove', (e) => { if (dragging) setTargetFromClientX(e.clientX); });
+  window.addEventListener('pointerup', () => { dragging = false; });
+
+  window.addEventListener('keydown', (e) => {
+    if (!state || !state.running || state.paused) return;
+    if (e.key === 'ArrowLeft') state.targetX = Math.max(PLAYER_R, state.targetX - 40);
+    if (e.key === 'ArrowRight') state.targetX = Math.min(W - PLAYER_R, state.targetX + 40);
+  });
+
+  function startGame() {
+    state = freshState();
+    state.running = true;
+    renderLives();
+    renderBuffs();
+    scoreEl.textContent = '0';
+    comboEl.textContent = 'x1';
+    bestEl.textContent = bestScore;
+    bossBar.style.display = 'none';
+    overlay.classList.remove('show');
+    startOverlay.classList.remove('show');
+    pauseOverlay.classList.remove('show');
+  }
+
+  document.getElementById('bnStartBtn').addEventListener('click', startGame);
+  document.getElementById('bnPlayAgain').addEventListener('click', startGame);
+  document.getElementById('bnRestartBtn').addEventListener('click', startGame);
+  document.getElementById('bnPauseBtn').addEventListener('click', () => {
+    if (!state.running) return;
+    state.paused = !state.paused;
+    pauseOverlay.classList.toggle('show', state.paused);
+  });
+  document.getElementById('bnResumeBtn').addEventListener('click', () => {
+    state.paused = false;
+    pauseOverlay.classList.remove('show');
+  });
+
+  state = freshState();
+  renderLives();
+  requestAnimationFrame(loop);
+})();
+</script>
