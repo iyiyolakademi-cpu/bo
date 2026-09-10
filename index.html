@@ -1,754 +1,651 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>5. Sınıf Karma Test</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6. Sınıf 1. Dönem Türkçe ve Fen Testi</title>
 
-  <style>
+<style>
     * {
-      box-sizing: border-box;
+        box-sizing: border-box;
     }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #222;
+        margin: 0;
+        background: #ffffff;
+        color: #111111;
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
     }
 
     .container {
-      width: 92%;
-      max-width: 780px;
-      margin: auto;
-      padding: 25px 0 60px;
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 30px 20px 60px;
     }
 
     .header {
-      text-align: center;
-      margin-bottom: 22px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 25px;
+        margin-bottom: 30px;
     }
 
     .header h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
+        margin: 0 0 8px;
+        font-size: 28px;
     }
 
     .header p {
-      margin: 0;
-      color: #777;
-      font-size: 15px;
+        margin: 0;
+        color: #666;
     }
 
-    .score {
-      position: sticky;
-      top: 10px;
-      z-index: 20;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 13px 15px;
-      margin-bottom: 25px;
-      font-weight: bold;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-
-    .lesson-title {
-      margin-top: 32px;
-      margin-bottom: 15px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #222;
-      font-size: 22px;
+    .section-title {
+        margin-top: 40px;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        background: #fafafa;
+        font-size: 21px;
+        font-weight: bold;
     }
 
     .question {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 13px;
-      padding: 18px;
-      margin-bottom: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 18px;
+        margin-bottom: 18px;
+        background: #fff;
     }
 
-    .question h3 {
-      font-size: 17px;
-      line-height: 1.55;
-      margin: 0 0 14px;
-      font-weight: 600;
+    .question-text {
+        font-weight: bold;
+        margin-bottom: 13px;
     }
 
-    .option {
-      width: 100%;
-      display: block;
-      text-align: left;
-      padding: 12px 13px;
-      margin-top: 8px;
-      border: 1px solid #ccc;
-      border-radius: 9px;
-      background: #fafafa;
-      color: #222;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 0.15s;
+    label {
+        display: block;
+        padding: 9px 10px;
+        margin: 5px 0;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.2s;
     }
 
-    .option:hover {
-      background: #eeeeee;
+    label:hover {
+        background: #f7f7f7;
     }
 
-    .option.correct {
-      background: #e6f6e9;
-      border-color: #4ba25d;
-      color: #176428;
+    input[type="radio"] {
+        margin-right: 8px;
     }
 
-    .option.wrong {
-      background: #fde8e8;
-      border-color: #d34e4e;
-      color: #8f2626;
+    .correct {
+        background: #e9f7e9 !important;
+        border-color: #75b875 !important;
     }
 
-    .option:disabled {
-      cursor: default;
-    }
-
-    .feedback {
-      display: none;
-      margin-top: 12px;
-      font-size: 14px;
-      font-weight: bold;
-      line-height: 1.5;
-    }
-
-    .correctText {
-      color: #26813b;
-    }
-
-    .wrongText {
-      color: #c83434;
+    .wrong {
+        background: #fbeaea !important;
+        border-color: #d87878 !important;
     }
 
     .result {
-      display: none;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 14px;
-      padding: 25px 18px;
-      text-align: center;
-      margin-top: 30px;
+        margin-top: 8px;
+        font-weight: bold;
     }
 
-    .result h2 {
-      margin-top: 0;
+    .button-area {
+        text-align: center;
+        margin-top: 35px;
     }
 
-    .restart {
-      border: none;
-      background: #222;
-      color: white;
-      padding: 12px 22px;
-      border-radius: 9px;
-      cursor: pointer;
-      font-size: 15px;
-      margin-top: 10px;
-    }
-
-    @media(max-width: 600px) {
-      .container {
-        width: 94%;
-      }
-
-      .header h1 {
-        font-size: 23px;
-      }
-
-      .score {
-        font-size: 13px;
-      }
-
-      .question {
-        padding: 15px;
-      }
-
-      .question h3 {
+    button {
+        border: none;
+        background: #111;
+        color: white;
+        padding: 14px 35px;
+        border-radius: 6px;
         font-size: 16px;
-      }
-
-      .option {
-        font-size: 14px;
-      }
+        cursor: pointer;
     }
-  </style>
+
+    button:hover {
+        background: #333;
+    }
+
+    #scoreBox {
+        display: none;
+        margin-top: 30px;
+        padding: 25px;
+        border: 1px solid #ddd;
+        text-align: center;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    #score {
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .summary {
+        color: #555;
+    }
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <div class="header">
-    <h1>5. Sınıf Karma Test</h1>
-    <p>Türkçe • Matematik • Fen Bilimleri</p>
-  </div>
+    <div class="header">
+        <h1>6. Sınıf 1. Dönem Testi</h1>
+        <p>Türkçe ve Fen Bilimleri • Toplam 40 Soru</p>
+    </div>
 
-  <div class="score">
-    <span>Doğru: <span id="correctCount">0</span></span>
-    <span>Yanlış: <span id="wrongCount">0</span></span>
-    <span>Soru: <span id="answeredCount">0</span>/30</span>
-  </div>
+    <form id="quiz">
 
-  <div id="quiz"></div>
+        <!-- TÜRKÇE -->
 
-  <div class="result" id="result">
-    <h2>Test Tamamlandı</h2>
-    <p id="resultText"></p>
+        <div class="section-title">
+            Türkçe Testi — 20 Soru
+        </div>
 
-    <button class="restart" onclick="location.reload()">
-      Testi Yeniden Çöz
-    </button>
-  </div>
+        <div class="question">
+            <div class="question-text">1. Aşağıdaki cümlelerin hangisinde amaç-sonuç ilişkisi vardır?</div>
+            <label><input type="radio" name="q1" value="A"> A) Başarılı olmak için düzenli çalışıyor.</label>
+            <label><input type="radio" name="q1" value="B"> B) Yağmur yağdığı için dışarı çıkmadı.</label>
+            <label><input type="radio" name="q1" value="C"> C) Çok yorulduğu için erkenden uyudu.</label>
+            <label><input type="radio" name="q1" value="D"> D) Hastalandığı için okula gitmedi.</label>
+            <div class="result" id="r1"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">2. “Ali, sabah erkenden kalkarak kitap okumaya başladı.” cümlesinde “erkenden” sözcüğü hangi türdedir?</div>
+            <label><input type="radio" name="q2" value="A"> A) İsim</label>
+            <label><input type="radio" name="q2" value="B"> B) Zarf</label>
+            <label><input type="radio" name="q2" value="C"> C) Sıfat</label>
+            <label><input type="radio" name="q2" value="D"> D) Zamir</label>
+            <div class="result" id="r2"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">3. Aşağıdaki sözcük çiftlerinden hangisi eş anlamlıdır?</div>
+            <label><input type="radio" name="q3" value="A"> A) Siyah - Beyaz</label>
+            <label><input type="radio" name="q3" value="B"> B) Yaşlı - Genç</label>
+            <label><input type="radio" name="q3" value="C"> C) Konuk - Misafir</label>
+            <label><input type="radio" name="q3" value="D"> D) Uzun - Kısa</label>
+            <div class="result" id="r3"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">4. “Kardeşim kadar hızlı koşabilmek için her gün antrenman yapıyorum.” cümlesinde hangi anlam ilişkisi vardır?</div>
+            <label><input type="radio" name="q4" value="A"> A) Karşılaştırma</label>
+            <label><input type="radio" name="q4" value="B"> B) Neden-sonuç</label>
+            <label><input type="radio" name="q4" value="C"> C) Koşul-sonuç</label>
+            <label><input type="radio" name="q4" value="D"> D) Amaç-sonuç</label>
+            <div class="result" id="r4"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">5. Aşağıdakilerden hangisi bir deyimdir?</div>
+            <label><input type="radio" name="q5" value="A"> A) Kitap okumak</label>
+            <label><input type="radio" name="q5" value="B"> B) Etekleri zil çalmak</label>
+            <label><input type="radio" name="q5" value="C"> C) Okula gitmek</label>
+            <label><input type="radio" name="q5" value="D"> D) Ders çalışmak</label>
+            <div class="result" id="r5"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">6. “Bu soruyu çözebilirim.” cümlesindeki fiil hangi kiptedir?</div>
+            <label><input type="radio" name="q6" value="A"> A) Geçmiş zaman</label>
+            <label><input type="radio" name="q6" value="B"> B) Gelecek zaman</label>
+            <label><input type="radio" name="q6" value="C"> C) Geniş zaman</label>
+            <label><input type="radio" name="q6" value="D"> D) Şimdiki zaman</label>
+            <div class="result" id="r6"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">7. Aşağıdaki cümlelerin hangisinde öznel bir yargı vardır?</div>
+            <label><input type="radio" name="q7" value="A"> A) Türkiye'nin başkenti Ankara'dır.</label>
+            <label><input type="radio" name="q7" value="B"> B) Kitap 120 sayfadan oluşuyor.</label>
+            <label><input type="radio" name="q7" value="C"> C) Bu film çok etkileyici.</label>
+            <label><input type="radio" name="q7" value="D"> D) Bir hafta yedi gündür.</label>
+            <div class="result" id="r7"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">8. “Çocuk, yağmurdan korunmak için şemsiyesini açtı.” cümlesinde amaç nedir?</div>
+            <label><input type="radio" name="q8" value="A"> A) Şemsiyesini açmak</label>
+            <label><input type="radio" name="q8" value="B"> B) Yağmurdan korunmak</label>
+            <label><input type="radio" name="q8" value="C"> C) Çocuk olmak</label>
+            <label><input type="radio" name="q8" value="D"> D) Yağmur yağması</label>
+            <div class="result" id="r8"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">9. Aşağıdaki sözcüklerden hangisi türemiş sözcüktür?</div>
+            <label><input type="radio" name="q9" value="A"> A) Gözlük</label>
+            <label><input type="radio" name="q9" value="B"> B) Ev</label>
+            <label><input type="radio" name="q9" value="C"> C) Kalem</label>
+            <label><input type="radio" name="q9" value="D"> D) Masa</label>
+            <div class="result" id="r9"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">10. “Eğer düzenli çalışırsan başarılı olursun.” cümlesinde hangi anlam ilişkisi vardır?</div>
+            <label><input type="radio" name="q10" value="A"> A) Karşılaştırma</label>
+            <label><input type="radio" name="q10" value="B"> B) Koşul-sonuç</label>
+            <label><input type="radio" name="q10" value="C"> C) Amaç-sonuç</label>
+            <label><input type="radio" name="q10" value="D"> D) Neden-sonuç</label>
+            <div class="result" id="r10"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">11. Aşağıdaki cümlelerin hangisinde mecaz anlamlı bir sözcük kullanılmıştır?</div>
+            <label><input type="radio" name="q11" value="A"> A) Masanın ayağı kırıldı.</label>
+            <label><input type="radio" name="q11" value="B"> B) Sıcak çayı dikkatlice içti.</label>
+            <label><input type="radio" name="q11" value="C"> C) Arkadaşının sözleri onu çok kırdı.</label>
+            <label><input type="radio" name="q11" value="D"> D) Çocuk kapıyı açtı.</label>
+            <div class="result" id="r11"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">12. Aşağıdaki cümlelerin hangisinde zamir kullanılmıştır?</div>
+            <label><input type="radio" name="q12" value="A"> A) Ahmet bugün okula geldi.</label>
+            <label><input type="radio" name="q12" value="B"> B) Bu kitabı ben aldım.</label>
+            <label><input type="radio" name="q12" value="C"> C) Güzel bir gün geçirdik.</label>
+            <label><input type="radio" name="q12" value="D"> D) Çocuk hızlı koştu.</label>
+            <div class="result" id="r12"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">13. “Kırmızı araba hızla yoldan geçti.” cümlesinde “kırmızı” sözcüğünün görevi nedir?</div>
+            <label><input type="radio" name="q13" value="A"> A) Zamir</label>
+            <label><input type="radio" name="q13" value="B"> B) Zarf</label>
+            <label><input type="radio" name="q13" value="C"> C) Sıfat</label>
+            <label><input type="radio" name="q13" value="D"> D) Fiil</label>
+            <div class="result" id="r13"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">14. “Çok çalıştı fakat sınavda istediği sonucu alamadı.” cümlesinde hangi bağlaç kullanılmıştır?</div>
+            <label><input type="radio" name="q14" value="A"> A) Çünkü</label>
+            <label><input type="radio" name="q14" value="B"> B) Fakat</label>
+            <label><input type="radio" name="q14" value="C"> C) Ve</label>
+            <label><input type="radio" name="q14" value="D"> D) Veya</label>
+            <div class="result" id="r14"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">15. Aşağıdakilerden hangisi bir atasözüdür?</div>
+            <label><input type="radio" name="q15" value="A"> A) Burnundan solumak</label>
+            <label><input type="radio" name="q15" value="B"> B) Gözden düşmek</label>
+            <label><input type="radio" name="q15" value="C"> C) Damlaya damlaya göl olur.</label>
+            <label><input type="radio" name="q15" value="D"> D) Kulak vermek</label>
+            <div class="result" id="r15"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">16. Aşağıdaki cümlelerin hangisinde neden-sonuç ilişkisi vardır?</div>
+            <label><input type="radio" name="q16" value="A"> A) Başarılı olmak için çalıştı.</label>
+            <label><input type="radio" name="q16" value="B"> B) Yağmur yağdığı için maç iptal edildi.</label>
+            <label><input type="radio" name="q16" value="C"> C) Daha iyi koşmak için antrenman yaptı.</label>
+            <label><input type="radio" name="q16" value="D"> D) Sınavı kazanmak için kitap okudu.</label>
+            <div class="result" id="r16"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">17. “Ali, arkadaşından daha hızlı koşuyor.” cümlesinde hangi anlam özelliği vardır?</div>
+            <label><input type="radio" name="q17" value="A"> A) Karşılaştırma</label>
+            <label><input type="radio" name="q17" value="B"> B) Koşul</label>
+            <label><input type="radio" name="q17" value="C"> C) Amaç</label>
+            <label><input type="radio" name="q17" value="D"> D) Neden</label>
+            <div class="result" id="r17"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">18. Aşağıdakilerden hangisi bir paragrafın ana fikrini bulmada en çok yardımcı olur?</div>
+            <label><input type="radio" name="q18" value="A"> A) Paragraftaki en uzun cümle</label>
+            <label><input type="radio" name="q18" value="B"> B) Paragrafta anlatılmak istenen temel düşünce</label>
+            <label><input type="radio" name="q18" value="C"> C) İlk kelime</label>
+            <label><input type="radio" name="q18" value="D"> D) Son kelime</label>
+            <div class="result" id="r18"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">19. “Sessizce odadan çıktı.” cümlesinde “sessizce” sözcüğü hangi görevde kullanılmıştır?</div>
+            <label><input type="radio" name="q19" value="A"> A) Sıfat</label>
+            <label><input type="radio" name="q19" value="B"> B) Zamir</label>
+            <label><input type="radio" name="q19" value="C"> C) Zarf</label>
+            <label><input type="radio" name="q19" value="D"> D) İsim</label>
+            <div class="result" id="r19"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">20. Aşağıdakilerden hangisi bir metnin yardımcı fikridir?</div>
+            <label><input type="radio" name="q20" value="A"> A) Metnin temel düşüncesini destekleyen düşünce</label>
+            <label><input type="radio" name="q20" value="B"> B) Metnin başlığı</label>
+            <label><input type="radio" name="q20" value="C"> C) Metindeki ilk kelime</label>
+            <label><input type="radio" name="q20" value="D"> D) Metnin son cümlesi</label>
+            <div class="result" id="r20"></div>
+        </div>
+
+
+        <!-- FEN -->
+
+        <div class="section-title">
+            Fen Bilimleri Testi — 20 Soru
+        </div>
+
+        <div class="question">
+            <div class="question-text">21. Güneş sistemindeki en büyük gezegen hangisidir?</div>
+            <label><input type="radio" name="q21" value="A"> A) Dünya</label>
+            <label><input type="radio" name="q21" value="B"> B) Mars</label>
+            <label><input type="radio" name="q21" value="C"> C) Jüpiter</label>
+            <label><input type="radio" name="q21" value="D"> D) Venüs</label>
+            <div class="result" id="r21"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">22. Dünya'nın kendi ekseni etrafında dönmesi sonucunda ne oluşur?</div>
+            <label><input type="radio" name="q22" value="A"> A) Mevsimler</label>
+            <label><input type="radio" name="q22" value="B"> B) Gece ve gündüz</label>
+            <label><input type="radio" name="q22" value="C"> C) Ay tutulması</label>
+            <label><input type="radio" name="q22" value="D"> D) Yıl</label>
+            <div class="result" id="r22"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">23. Aşağıdakilerden hangisi destek ve hareket sisteminin bir parçasıdır?</div>
+            <label><input type="radio" name="q23" value="A"> A) Akciğer</label>
+            <label><input type="radio" name="q23" value="B"> B) Kalp</label>
+            <label><input type="radio" name="q23" value="C"> C) Kemik</label>
+            <label><input type="radio" name="q23" value="D"> D) Mide</label>
+            <div class="result" id="r23"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">24. Kasların temel görevi aşağıdakilerden hangisidir?</div>
+            <label><input type="radio" name="q24" value="A"> A) Vücudu hareket ettirmek</label>
+            <label><input type="radio" name="q24" value="B"> B) Kanı temizlemek</label>
+            <label><input type="radio" name="q24" value="C"> C) Besinleri sindirmek</label>
+            <label><input type="radio" name="q24" value="D"> D) Oksijen üretmek</label>
+            <div class="result" id="r24"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">25. Sindirim sistemiyle ilgili aşağıdakilerden hangisi doğrudur?</div>
+            <label><input type="radio" name="q25" value="A"> A) Besinlerin kana geçmesini sağlar.</label>
+            <label><input type="radio" name="q25" value="B"> B) Vücuda oksijen taşır.</label>
+            <label><input type="radio" name="q25" value="C"> C) Kanı pompalar.</label>
+            <label><input type="radio" name="q25" value="D"> D) Vücudu hareket ettirir.</label>
+            <div class="result" id="r25"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">26. Kanın vücutta dolaşmasını sağlayan organ hangisidir?</div>
+            <label><input type="radio" name="q26" value="A"> A) Akciğer</label>
+            <label><input type="radio" name="q26" value="B"> B) Mide</label>
+            <label><input type="radio" name="q26" value="C"> C) Kalp</label>
+            <label><input type="radio" name="q26" value="D"> D) Böbrek</label>
+            <div class="result" id="r26"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">27. Solunum sisteminde gaz alışverişinin gerçekleştiği temel yapı hangisidir?</div>
+            <label><input type="radio" name="q27" value="A"> A) Mide</label>
+            <label><input type="radio" name="q27" value="B"> B) Akciğer</label>
+            <label><input type="radio" name="q27" value="C"> C) Kalp</label>
+            <label><input type="radio" name="q27" value="D"> D) Böbrek</label>
+            <div class="result" id="r27"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">28. Aşağıdakilerden hangisi dolaşım sisteminin görevlerinden biridir?</div>
+            <label><input type="radio" name="q28" value="A"> A) Besin ve oksijeni hücrelere taşımak</label>
+            <label><input type="radio" name="q28" value="B"> B) Besinleri çiğnemek</label>
+            <label><input type="radio" name="q28" value="C"> C) Ses oluşturmak</label>
+            <label><input type="radio" name="q28" value="D"> D) Vücudu hareket ettirmek</label>
+            <div class="result" id="r28"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">29. Bir cismin hareket durumunu değiştiren etkiye ne ad verilir?</div>
+            <label><input type="radio" name="q29" value="A"> A) Isı</label>
+            <label><input type="radio" name="q29" value="B"> B) Kuvvet</label>
+            <label><input type="radio" name="q29" value="C"> C) Işık</label>
+            <label><input type="radio" name="q29" value="D"> D) Ses</label>
+            <div class="result" id="r29"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">30. Kuvvetin birimi aşağıdakilerden hangisidir?</div>
+            <label><input type="radio" name="q30" value="A"> A) Kilogram</label>
+            <label><input type="radio" name="q30" value="B"> B) Metre</label>
+            <label><input type="radio" name="q30" value="C"> C) Newton</label>
+            <label><input type="radio" name="q30" value="D"> D) Litre</label>
+            <div class="result" id="r30"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">31. Aşağıdakilerden hangisi ışığın özelliklerinden biridir?</div>
+            <label><input type="radio" name="q31" value="A"> A) Boşlukta yayılabilir.</label>
+            <label><input type="radio" name="q31" value="B"> B) Sadece suda yayılır.</label>
+            <label><input type="radio" name="q31" value="C"> C) Yayılması için hava gerekir.</label>
+            <label><input type="radio" name="q31" value="D"> D) Her zaman eğri hareket eder.</label>
+            <div class="result" id="r31"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">32. Sesin oluşması için aşağıdakilerden hangisi gereklidir?</div>
+            <label><input type="radio" name="q32" value="A"> A) Titreşim</label>
+            <label><input type="radio" name="q32" value="B"> B) Işık</label>
+            <label><input type="radio" name="q32" value="C"> C) Gölge</label>
+            <label><input type="radio" name="q32" value="D"> D) Elektrik</label>
+            <div class="result" id="r32"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">33. Aşağıdaki maddelerden hangisi ısıyı iyi iletir?</div>
+            <label><input type="radio" name="q33" value="A"> A) Plastik</label>
+            <label><input type="radio" name="q33" value="B"> B) Tahta</label>
+            <label><input type="radio" name="q33" value="C"> C) Metal</label>
+            <label><input type="radio" name="q33" value="D"> D) Strafor</label>
+            <div class="result" id="r33"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">34. Bir maddenin ısı alarak katı hâlden sıvı hâle geçmesine ne denir?</div>
+            <label><input type="radio" name="q34" value="A"> A) Donma</label>
+            <label><input type="radio" name="q34" value="B"> B) Buharlaşma</label>
+            <label><input type="radio" name="q34" value="C"> C) Erime</label>
+            <label><input type="radio" name="q34" value="D"> D) Yoğuşma</label>
+            <div class="result" id="r34"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">35. Su buharının soğuyarak sıvı hâle geçmesine ne denir?</div>
+            <label><input type="radio" name="q35" value="A"> A) Erime</label>
+            <label><input type="radio" name="q35" value="B"> B) Yoğuşma</label>
+            <label><input type="radio" name="q35" value="C"> C) Donma</label>
+            <label><input type="radio" name="q35" value="D"> D) Süblimleşme</label>
+            <div class="result" id="r35"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">36. Aşağıdakilerden hangisi elektrik iletkenidir?</div>
+            <label><input type="radio" name="q36" value="A"> A) Cam</label>
+            <label><input type="radio" name="q36" value="B"> B) Plastik</label>
+            <label><input type="radio" name="q36" value="C"> C) Bakır</label>
+            <label><input type="radio" name="q36" value="D"> D) Kauçuk</label>
+            <div class="result" id="r36"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">37. Bir elektrik devresinde ampulün ışık vermesi için devrenin nasıl olması gerekir?</div>
+            <label><input type="radio" name="q37" value="A"> A) Açık devre</label>
+            <label><input type="radio" name="q37" value="B"> B) Kapalı devre</label>
+            <label><input type="radio" name="q37" value="C"> C) Pil olmadan</label>
+            <label><input type="radio" name="q37" value="D"> D) Kablo olmadan</label>
+            <div class="result" id="r37"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">38. Aşağıdakilerden hangisi bir enerji kaynağıdır?</div>
+            <label><input type="radio" name="q38" value="A"> A) Güneş</label>
+            <label><input type="radio" name="q38" value="B"> B) Plastik</label>
+            <label><input type="radio" name="q38" value="C"> C) Cam</label>
+            <label><input type="radio" name="q38" value="D"> D) Kum</label>
+            <div class="result" id="r38"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">39. Aşağıdakilerden hangisi yenilenebilir enerji kaynağıdır?</div>
+            <label><input type="radio" name="q39" value="A"> A) Kömür</label>
+            <label><input type="radio" name="q39" value="B"> B) Petrol</label>
+            <label><input type="radio" name="q39" value="C"> C) Doğal gaz</label>
+            <label><input type="radio" name="q39" value="D"> D) Güneş enerjisi</label>
+            <div class="result" id="r39"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-text">40. Aşağıdakilerden hangisi çevreyi korumaya yönelik doğru bir davranıştır?</div>
+            <label><input type="radio" name="q40" value="A"> A) Atıkları doğaya bırakmak</label>
+            <label><input type="radio" name="q40" value="B"> B) Suyu gereksiz yere açık bırakmak</label>
+            <label><input type="radio" name="q40" value="C"> C) Geri dönüşüm yapmak</label>
+            <label><input type="radio" name="q40" value="D"> D) Gereksiz elektrik kullanmak</label>
+            <div class="result" id="r40"></div>
+        </div>
+
+        <div class="button-area">
+            <button type="button" onclick="checkQuiz()">Testi Bitir</button>
+        </div>
+
+    </form>
+
+    <div id="scoreBox">
+        <div id="score"></div>
+        <div class="summary" id="summary"></div>
+    </div>
 
 </div>
 
 <script>
 
-const questions = [
-
-/* ================= TÜRKÇE ================= */
-
-{
-  lesson: "Türkçe",
-  question: "1. “Mert, uzun süredir aradığı kitabı sonunda bulunca çok sevindi.” cümlesine göre Mert’in sevinmesinin asıl nedeni aşağıdakilerden hangisidir?",
-  options: [
-    "Uzun zamandır kitap okumaması",
-    "Aradığı kitabı sonunda bulması",
-    "Kitabın çok kalın olması",
-    "Kitabı arkadaşından alması"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Türkçe",
-  question: "2. Aşağıdaki cümlelerin hangisinde altı çizili olmasa da bir karşılaştırma anlamı vardır?",
-  options: [
-    "Ayşe bugün erkenden uyandı.",
-    "Bu kitap, önceki kitaptan daha sürükleyiciydi.",
-    "Babam akşam eve geldi.",
-    "Çocuklar bahçede oyun oynadı."
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Türkçe",
-  question: "3. “Küçük çocuk, annesinin elini sıkıca tuttu ve kalabalığın içinde kaybolmamak için yanından ayrılmadı.” cümlesinden hangi sonuç çıkarılabilir?",
-  options: [
-    "Çocuk kalabalıktan çekinmiştir.",
-    "Çocuk annesine kızmıştır.",
-    "Çocuk oyun oynamak istemiştir.",
-    "Annesi çocuğu yalnız bırakmıştır."
-  ],
-  answer: 0
-},
-
-{
-  lesson: "Türkçe",
-  question: "4. Aşağıdaki cümlelerden hangisinde neden-sonuç ilişkisi vardır?",
-  options: [
-    "Kitabını masanın üzerine bıraktı.",
-    "Yağmur yağdığı için maça gidemedik.",
-    "Sabah erkenden uyandı.",
-    "Arkadaşlarıyla parkta oynadı."
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Türkçe",
-  question: "5. “Düzenli kitap okuyan kişiler zamanla daha çok kelime öğrenir ve kendilerini daha iyi ifade eder.” cümlesinin ana düşüncesi hangisidir?",
-  options: [
-    "Kitapların pahalı olduğu",
-    "Kitap okumanın kelime hazinesini geliştirdiği",
-    "Herkesin aynı kitabı okuması gerektiği",
-    "Kitapların yalnızca okul için gerekli olduğu"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Türkçe",
-  question: "6. Aşağıdaki cümlelerin hangisinde benzetme yapılmıştır?",
-  options: [
-    "Gökyüzü bugün oldukça açıktı.",
-    "Babam sabah erkenden işe gitti.",
-    "Kardeşimin saçları altın gibi parlıyordu.",
-    "Sınıfımızda yirmi öğrenci vardı."
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Türkçe",
-  question: "7. “Ali önce ödevini tamamladı, ardından çantasını hazırladı ve son olarak uyumaya gitti.” cümlesine göre olayların doğru sırası hangisidir?",
-  options: [
-    "Uyuma - Çanta hazırlama - Ödev",
-    "Çanta hazırlama - Ödev - Uyuma",
-    "Ödev - Çanta hazırlama - Uyuma",
-    "Ödev - Uyuma - Çanta hazırlama"
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Türkçe",
-  question: "8. Aşağıdaki cümlelerin hangisinde bir tahmin anlamı vardır?",
-  options: [
-    "Sanırım yarın hava yağmurlu olacak.",
-    "Sabah saat yedide uyandım.",
-    "Kitabın ilk bölümünü okudum.",
-    "Babam marketten ekmek aldı."
-  ],
-  answer: 0
-},
-
-{
-  lesson: "Türkçe",
-  question: "9. “Öğretmen sınıfa girince öğrenciler konuşmayı bıraktı.” cümlesinde öğrencilerin konuşmayı bırakmasına sebep olan olay hangisidir?",
-  options: [
-    "Dersin bitmesi",
-    "Öğretmenin sınıfa girmesi",
-    "Öğrencilerin yorulması",
-    "Teneffüs zilinin çalması"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Türkçe",
-  question: "10. Aşağıdakilerden hangisinin yazımı ve noktalaması doğrudur?",
-  options: [
-    "yarın Ankara'ya gideceğiz.",
-    "Yarın ankara'ya gideceğiz.",
-    "Yarın Ankara'ya gideceğiz.",
-    "Yarın Ankara ya gideceğiz."
-  ],
-  answer: 2
-},
-
-
-/* ================= MATEMATİK ================= */
-
-{
-  lesson: "Matematik",
-  question: "11. Bir kütüphanede 2.485 hikâye kitabı, 1.675 bilim kitabı ve 840 şiir kitabı vardır. Kütüphanede toplam kaç kitap vardır?",
-  options: [
-    "4.900",
-    "5.000",
-    "5.100",
-    "5.200"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Matematik",
-  question: "12. Bir okulun 4.250 öğrencisinin 1.875'i kızdır. Buna göre erkek öğrenci sayısı kaçtır?",
-  options: [
-    "2.275",
-    "2.375",
-    "2.475",
-    "2.575"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Matematik",
-  question: "13. Bir markette 24 koli su vardır. Her kolide 12 şişe su olduğuna göre markette toplam kaç şişe su vardır?",
-  options: [
-    "268",
-    "278",
-    "288",
-    "298"
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Matematik",
-  question: "14. Bir öğretmen 864 kalemi 8 sınıfa eşit olarak dağıtacaktır. Her sınıfa kaç kalem düşer?",
-  options: [
-    "98",
-    "108",
-    "118",
-    "128"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Matematik",
-  question: "15. 78.465 sayısında binler basamağındaki rakam ile yüzler basamağındaki rakamın toplamı kaçtır?",
-  options: [
-    "8",
-    "10",
-    "12",
-    "14"
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Matematik",
-  question: "16. 6, 12, 24, 48, ... sayı örüntüsünde her sayı bir öncekinin 2 katıdır. Buna göre sıradaki sayı kaçtır?",
-  options: [
-    "72",
-    "84",
-    "96",
-    "102"
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Matematik",
-  question: "17. Uzun kenarı 12 cm, kısa kenarı 7 cm olan bir dikdörtgenin çevresi kaç santimetredir?",
-  options: [
-    "19",
-    "24",
-    "38",
-    "84"
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Matematik",
-  question: "18. Bir otobüste başlangıçta 46 yolcu vardır. İlk durakta 18 kişi iner, 9 kişi biner. Otobüste kaç yolcu kalır?",
-  options: [
-    "35",
-    "37",
-    "39",
-    "41"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Matematik",
-  question: "19. Bir manav 125 kilogram elmanın 48 kilogramını sabah, 37 kilogramını öğleden sonra satıyor. Geriye kaç kilogram elma kalır?",
-  options: [
-    "30",
-    "35",
-    "40",
-    "45"
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Matematik",
-  question: "20. Bir kenarı 9 cm olan kare ile kısa kenarı 5 cm, uzun kenarı 8 cm olan dikdörtgenin çevreleri arasındaki fark kaç santimetredir?",
-  options: [
-    "8",
-    "10",
-    "12",
-    "14"
-  ],
-  answer: 1
-},
-
-
-/* ================= FEN ================= */
-
-{
-  lesson: "Fen Bilimleri",
-  question: "21. Bir öğrenci Ay'ı yaklaşık bir ay boyunca gözlemlediğinde Ay'ın görünüşünün sürekli değiştiğini fark ediyor. Bu değişimin temel nedeni aşağıdakilerden hangisidir?",
-  options: [
-    "Ay'ın kendi ışığını üretmesi",
-    "Ay'ın Dünya etrafında dolanırken Güneş'ten aldığı ışığın farklı bölümlerinin görülmesi",
-    "Dünya'nın her gün büyüyüp küçülmesi",
-    "Güneş'in Ay etrafında dolanması"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "22. Dünya'da kütlesi 18 kg olan bir cismin Ay'a götürüldüğü düşünülüyor. Aşağıdakilerden hangisi doğrudur?",
-  options: [
-    "Kütlesi azalır, ağırlığı değişmez.",
-    "Kütlesi artar, ağırlığı azalır.",
-    "Kütlesi değişmez, ağırlığı azalır.",
-    "Kütlesi ve ağırlığı tamamen aynı kalır."
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "23. Aynı oyuncak araba aynı kuvvetle buz, tahta ve halı üzerinde itiliyor. Arabanın en kısa mesafeyi halıda almasının nedeni nedir?",
-  options: [
-    "Halıda sürtünme kuvvetinin daha fazla olması",
-    "Halıda yer çekiminin daha fazla olması",
-    "Arabanın halıda kütlesinin artması",
-    "Halıda hava direncinin tamamen yok olması"
-  ],
-  answer: 0
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "24. En fazla 80 N ölçebilen ve 16 eşit bölmeden oluşan bir dinamometrede her bir bölme kaç Newton değerindedir?",
-  options: [
-    "4 N",
-    "5 N",
-    "8 N",
-    "10 N"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "25. Bir öğrenci ağır bir dolabı daha kolay hareket ettirmek istiyor. Aşağıdakilerden hangisini yapması sürtünme kuvvetini azaltarak işini kolaylaştırır?",
-  options: [
-    "Dolabın altına tekerlek koymak",
-    "Zemini daha pürüzlü yapmak",
-    "Dolabın altına kum dökmek",
-    "Dolabın ağırlığını artırmak"
-  ],
-  answer: 0
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "26. Kışın araçların buzlu yollarda daha güvenli hareket etmesi için lastiklere zincir takılır. Bunun temel amacı nedir?",
-  options: [
-    "Aracın kütlesini azaltmak",
-    "Sürtünme kuvvetini artırmak",
-    "Yer çekimini azaltmak",
-    "Aracın ağırlığını sıfırlamak"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "27. Paraşütçü paraşütünü açtığında yüzey alanı büyür ve yere daha yavaş inmeye başlar. Bunun nedeni aşağıdakilerden hangisidir?",
-  options: [
-    "Hava direncinin artması",
-    "Kütlesinin azalması",
-    "Yer çekiminin ortadan kalkması",
-    "Ağırlığının sıfır olması"
-  ],
-  answer: 0
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "28. Bir öğrenci bisiklet zincirini yağladıktan sonra pedalların daha kolay döndüğünü fark ediyor. Bunun nedeni hangisidir?",
-  options: [
-    "Sürtünme kuvvetinin artması",
-    "Sürtünme kuvvetinin azalması",
-    "Bisikletin kütlesinin artması",
-    "Yer çekiminin azalması"
-  ],
-  answer: 1
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "29. Ay'ın ışık kaynağı olmadığı bilindiğine göre, geceleri parlak görünmesinin nedeni hangisidir?",
-  options: [
-    "Yıldızlardan aldığı ışığı üretmesi",
-    "Dünya'nın ışığını içine çekmesi",
-    "Güneş'ten gelen ışığı yansıtması",
-    "Gece olduğunda kendi ışığını oluşturması"
-  ],
-  answer: 2
-},
-
-{
-  lesson: "Fen Bilimleri",
-  question: "30. Bir öğrenci aynı kitabı hem sınıfta hem de Ay'da tartabilseydi, hangi özelliğin değişmeden kaldığını gözlemlerdi?",
-  options: [
-    "Ağırlık",
-    "Yer çekimi",
-    "Kütle",
-    "Dinamometrede okunan değer"
-  ],
-  answer: 2
-}
-
-];
-
-
-let correct = 0;
-let wrong = 0;
-let answered = 0;
-
-const quiz = document.getElementById("quiz");
-
-let lastLesson = "";
-
-
-questions.forEach((item) => {
-
-  if (item.lesson !== lastLesson) {
-
-    lastLesson = item.lesson;
-
-    const title = document.createElement("h2");
-    title.className = "lesson-title";
-    title.textContent = item.lesson;
-
-    quiz.appendChild(title);
-  }
-
-
-  const questionBox = document.createElement("div");
-  questionBox.className = "question";
-
-
-  const questionTitle = document.createElement("h3");
-  questionTitle.textContent = item.question;
-
-  questionBox.appendChild(questionTitle);
-
-
-  const feedback = document.createElement("div");
-  feedback.className = "feedback";
-
-
-  item.options.forEach((option, index) => {
-
-    const button = document.createElement("button");
-
-    button.className = "option";
-
-    button.textContent =
-      String.fromCharCode(65 + index) + ") " + option;
-
-
-    button.addEventListener("click", function() {
-
-      const buttons = questionBox.querySelectorAll(".option");
-
-      buttons.forEach(btn => {
-        btn.disabled = true;
-      });
-
-
-      if (index === item.answer) {
-
-        button.classList.add("correct");
-
-        feedback.textContent = "✓ Doğru cevap";
-        feedback.className = "feedback correctText";
-        feedback.style.display = "block";
-
-        correct++;
-
-      } else {
-
-        button.classList.add("wrong");
-
-        buttons[item.answer].classList.add("correct");
-
-        feedback.textContent =
-          "✗ Yanlış — Doğru cevap: " +
-          String.fromCharCode(65 + item.answer) +
-          ") " +
-          item.options[item.answer];
-
-        feedback.className = "feedback wrongText";
-        feedback.style.display = "block";
-
-        wrong++;
-      }
-
-
-      answered++;
-
-
-      document.getElementById("correctCount").textContent = correct;
-      document.getElementById("wrongCount").textContent = wrong;
-      document.getElementById("answeredCount").textContent = answered;
-
-
-      if (answered === questions.length) {
-        showResult();
-      }
+const answers = {
+    q1:"A",
+    q2:"B",
+    q3:"C",
+    q4:"A",
+    q5:"B",
+    q6:"C",
+    q7:"C",
+    q8:"B",
+    q9:"A",
+    q10:"B",
+    q11:"C",
+    q12:"B",
+    q13:"C",
+    q14:"B",
+    q15:"C",
+    q16:"B",
+    q17:"A",
+    q18:"B",
+    q19:"C",
+    q20:"A",
+
+    q21:"C",
+    q22:"B",
+    q23:"C",
+    q24:"A",
+    q25:"A",
+    q26:"C",
+    q27:"B",
+    q28:"A",
+    q29:"B",
+    q30:"C",
+    q31:"A",
+    q32:"A",
+    q33:"C",
+    q34:"C",
+    q35:"B",
+    q36:"C",
+    q37:"B",
+    q38:"A",
+    q39:"D",
+    q40:"C"
+};
+
+function checkQuiz() {
+
+    let correct = 0;
+    let answered = 0;
+
+    for (let i = 1; i <= 40; i++) {
+
+        const question = document.querySelector(`input[name="q${i}"]`);
+        const options = document.querySelectorAll(`input[name="q${i}"]`);
+        const result = document.getElementById(`r${i}`);
+
+        options.forEach(option => {
+            option.parentElement.classList.remove("correct", "wrong");
+        });
+
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+
+        if (selected) {
+            answered++;
+
+            if (selected.value === answers[`q${i}`]) {
+                correct++;
+                selected.parentElement.classList.add("correct");
+                result.textContent = "✓ Doğru";
+                result.style.color = "#168316";
+            } else {
+                selected.parentElement.classList.add("wrong");
+
+                options.forEach(option => {
+                    if (option.value === answers[`q${i}`]) {
+                        option.parentElement.classList.add("correct");
+                    }
+                });
+
+                result.textContent = "✗ Yanlış";
+                result.style.color = "#c00000";
+            }
+        } else {
+            result.textContent = "Cevaplanmadı";
+            result.style.color = "#777";
+
+            options.forEach(option => {
+                if (option.value === answers[`q${i}`]) {
+                    option.parentElement.classList.add("correct");
+                }
+            });
+        }
+    }
+
+    const score = correct * 2.5;
+
+    document.getElementById("score").textContent =
+        "Puanınız: " + score + " / 100";
+
+    document.getElementById("summary").textContent =
+        "40 sorudan " + correct + " doğru, " +
+        (40 - correct) + " yanlış/boş yaptınız. " +
+        answered + " soru cevaplandı.";
 
+    document.getElementById("scoreBox").style.display = "block";
+
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
     });
-
-
-    questionBox.appendChild(button);
-
-  });
-
-
-  questionBox.appendChild(feedback);
-
-  quiz.appendChild(questionBox);
-
-});
-
-
-function showResult() {
-
-  const result = document.getElementById("result");
-  const resultText = document.getElementById("resultText");
-
-  const score = Math.round(
-    (correct / questions.length) * 100
-  );
-
-
-  let message = "";
-
-
-  if (score === 100) {
-    message = "Mükemmel! Tüm soruları doğru yaptın.";
-  }
-  else if (score >= 90) {
-    message = "Harika! Konulara çok iyi hakimsin.";
-  }
-  else if (score >= 80) {
-    message = "Çok iyi! Birkaç küçük tekrar yeterli.";
-  }
-  else if (score >= 70) {
-    message = "İyi gidiyorsun. Yanlış yaptığın konuları tekrar edebilirsin.";
-  }
-  else if (score >= 50) {
-    message = "Fena değil. Biraz daha çalışarak puanını hızlıca yükseltebilirsin.";
-  }
-  else {
-    message = "Konuları tekrar edip testi yeniden çözmen faydalı olacaktır.";
-  }
-
-
-  resultText.innerHTML = `
-    <strong>${correct} Doğru</strong><br>
-    ${wrong} Yanlış<br><br>
-    Puanın: <strong>${score} / 100</strong><br><br>
-    ${message}
-  `;
-
-
-  result.style.display = "block";
-
-
-  setTimeout(() => {
-    result.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
-  }, 250);
-
 }
 
 </script>
